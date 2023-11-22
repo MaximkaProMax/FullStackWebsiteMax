@@ -1,19 +1,23 @@
 <?php
+// подключение к базе данных
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "training";
+$dbname = "bd";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
+
+// проверка подключения
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die("connect failed: " . $conn->connect_error);
 }
 
+// обработка данных из формы входа
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = isset($_POST["email"]) ? $_POST["email"] : "";
     $password = isset($_POST["password"]) ? $_POST["password"] : "";
 
-    $query = "SELECT * FROM users WHERE email=?";
+    $query = "SELECT * FROM users WHERE  email=?";
     $stmt = $conn->prepare($query);
 
     if (!$stmt) {
@@ -25,39 +29,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $stmt->get_result();
 
     if ($result->num_rows == 1) {
-        $user = $result->fetch_assoc();
+        $user = $result->fetch_assos();
         if (password_verify($password, $user["password"])) {
             session_start();
             $_SESSION["user_id"] = $user["id"];
             echo "Вход выполнен";
         } else {
             echo "Неверный пароль";
-        } else {
-            echo "Пользователь с такими данными не существует";
         }
+    } else {
+        echo "Пользователь с такими данными не существует";
     }
+}
 
-    $conn->close();
+//закрытие соединения с базой данных
+$conn->close();
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Bxoд</title>
+    <title>Вход</title>
 </head>
 <body>
+
     <div class="container">
-    <h2>Bxoд</h2>
-    <form action="">
-        <label for="email">Почта:</label>
-        <input type="email" id="email" name="email" required>
+        <h2>Вход</h2>
+        <form action="login.php" method="post">
+            <label for="email">Почта:</label>
+            <input type="email" id="email" name="email" required>
 
-        <label for="password">Пароль:</label>
-        <input type="password" id="password" name="password" required>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
 
-        <button type="submit">Войти</button>
+            <button type="submit">Войти</button>
         </form>
     </div>
 </body>
