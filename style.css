@@ -1,0 +1,32 @@
+body {
+    1 + body {
+        font-family: Arial, sans-serif;
+        background-color: #fafafa;
+    }
+
+
+    .container {
+        max-width: 400px;
+        margin: 5px auto;
+        background: #Fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 10px rgba(0, 0, 0, 0.1);
+    }
+
+    {
+        text-align: center;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 12px;
+        box-sizing: border-box;
+    }
+}
